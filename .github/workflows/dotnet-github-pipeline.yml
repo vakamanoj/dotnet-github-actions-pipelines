@@ -20,11 +20,15 @@ jobs:
       
       # Step 3: Restore NuGet packages
       - name: Restore NuGet Packages
-        run: nuget restore ./SomeConsoleApplication.sln
+        run: |
+          cd dotnet-github-actions-pipeline 
+          nuget restore SomeConsoleApplication.sln
       
       # Step 4: Build the solution
       - name: Build Solution
-        run: msbuild YourSolution.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="../_build"
+        run: |
+          cd dotnet-github-actions-pipeline
+          msbuild SomeConsoleApplication.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="../_build"
       
       - name: Upload artifact
         uses: actions/upload-artifact@v3

@@ -35,7 +35,7 @@ jobs:
 
       - name: Begin SonarCloud Analysis
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"vakamanoj_dotnet-github-actions-pipelines" /o:"github-actions-projects-key" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.sources="dotnet-github-actions-pipeline/SomeConsoleApplication" /d:sonar.buildProject="dotnet-github-actions-pipeline/SomeConsoleApplication.sln"
+          dotnet-sonarscanner begin /k:"vakamanoj_dotnet-github-actions-pipelines" /o:"github-actions-projects-key" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.sources="dotnet-github-actions-pipeline/SomeConsoleApplication" /d:sonar.buildProject="dotnet-github-actions-pipeline/SomeConsoleApplication.sln"
     
       - name: Build the Solution
         run: |
@@ -44,7 +44,7 @@ jobs:
       
       - name: End SonarCloud Analysis
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
      
       # - name: SonarCloud Scan
       #   uses: sonarsource/sonarcloud-github-action@master

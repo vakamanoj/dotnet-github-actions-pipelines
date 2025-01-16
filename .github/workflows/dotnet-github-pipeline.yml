@@ -29,6 +29,7 @@ jobs:
         run: |
           cd dotnet-github-actions-pipeline
           msbuild SomeConsoleApplication.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="bin/Release/"
+
           
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
@@ -39,6 +40,10 @@ jobs:
           args: >
             -Dsonar.organization=github-actions-projects-key
             -Dsonar.projectKey=vakamanoj_dotnet-github-actions-pipelines
+            -Dsonar.sources=dotnet-github-actions-pipeline/SomeConsoleApplication
+            -Dsonar.buildProject=dotnet-github-actions-pipeline/SomeConsoleApplication.sln
+            -Dsonar.dotnet.key=SomeConsoleApplication
+            -Dsonar.host.url=https://sonarcloud.io
             
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4

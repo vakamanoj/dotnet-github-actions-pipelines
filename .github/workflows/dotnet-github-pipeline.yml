@@ -25,25 +25,37 @@ jobs:
           nuget restore SomeConsoleApplication.sln
       
       # Step 4: Build the solution
-      - name: Build Solution
+      # - name: Build Solution
+      #   run: |
+      #     cd dotnet-github-actions-pipeline
+      #     msbuild SomeConsoleApplication.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="bin/Release/"
+
+      - name: Begin SonarCloud Analysis
+        run: |
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"vakamanoj_dotnet-github-actions-pipelines" /o:"github-actions-projects-key" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.sources="dotnet-github-actions-pipeline/SomeConsoleApplication" /d:sonar.buildProject="dotnet-github-actions-pipeline/SomeConsoleApplication.sln"
+    
+      - name: Build the Solution
         run: |
           cd dotnet-github-actions-pipeline
           msbuild SomeConsoleApplication.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="bin/Release/"
-
-          
-      - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.organization=github-actions-projects-key
-            -Dsonar.projectKey=vakamanoj_dotnet-github-actions-pipelines
-            -Dsonar.sources=dotnet-github-actions-pipeline/SomeConsoleApplication
-            -Dsonar.buildProject=dotnet-github-actions-pipeline/SomeConsoleApplication.sln
-            -Dsonar.dotnet.key=SomeConsoleApplication
-            -Dsonar.host.url=https://sonarcloud.io
+      
+      - name: End SonarCloud Analysis
+        run: |
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+     
+      # - name: SonarCloud Scan
+      #   uses: sonarsource/sonarcloud-github-action@master
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #   with:
+      #     args: >
+      #       -Dsonar.organization=github-actions-projects-key
+      #       -Dsonar.projectKey=vakamanoj_dotnet-github-actions-pipelines
+      #       -Dsonar.sources=dotnet-github-actions-pipeline/SomeConsoleApplication
+      #       -Dsonar.buildProject=dotnet-github-actions-pipeline/SomeConsoleApplication.sln
+      #       -Dsonar.dotnet.key=SomeConsoleApplication
+      #       -Dsonar.host.url=https://sonarcloud.io
             
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4

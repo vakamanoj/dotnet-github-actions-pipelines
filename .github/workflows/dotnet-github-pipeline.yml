@@ -36,12 +36,12 @@ jobs:
       - name: Begin SonarCloud Analysis
         run: |
           
-          dotnet-sonarscanner begin /k:"vakamanoj_dotnet-github-actions-pipelines" /o:"github-actions-projects-key" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.sources="dotnet-github-actions-pipeline/" 
+          dotnet-sonarscanner begin /k:"myproject_dotnet-github-actions-pipelines" /o:"github-actions-projects-key" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
     
       - name: Build the Solution
         run: |
           cd dotnet-github-actions-pipeline
-          msbuild SomeConsoleApplication.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="bin/Release/"
+          dotnet build SomeConsoleApplication.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="bin/Release/"
       
       - name: End SonarCloud Analysis
         run: |
